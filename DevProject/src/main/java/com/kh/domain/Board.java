@@ -3,6 +3,7 @@ package com.kh.domain;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,10 +18,12 @@ import lombok.ToString;
 //@AllArgsConstructor	// 모든 매개변수를 받을 수 있는 생성자.
 //@Getter
 //@Setter
-//@NoArgsConstructor	// dafault.
-//@RequiredArgsConstructor
+@NoArgsConstructor	// dafault 생성자 생성.
+@RequiredArgsConstructor
+// @Builder
+@ToString(exclude = "content")
 //@ToString
-//@EqualsAndHashCode(of="boardNo")
+@EqualsAndHashCode(of="boardNo")
 public class Board 
 {
 	private int boardNo;
@@ -29,5 +32,6 @@ public class Board
 	private String content;
 	private String writer;
 	private Date regDate;
+
 
 }
