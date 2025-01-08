@@ -1,18 +1,19 @@
 package com.kh.controller;
 
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import lombok.extern.java.Log;
+import com.kh.domain.Board;
+
 import lombok.extern.slf4j.Slf4j;
 
 // @Log
@@ -23,14 +24,78 @@ public class HomeController
 //	// 멤버변수.
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
+	 @RequestMapping(value = "/memberInsert", method = RequestMethod.GET) 
+	 public	 String memberInsert()
+	 {
+		 return "memberInsert";
+	 }
+	 
 	
-	@GetMapping(value = "/ajaxHome")
-	public String ajaxHome ()
-	{
-		log.info("Headers Mapping Test...");
-		
-		return "ajaxHome";
-	}
+//	
+//	@ResponseBody
+//	@GetMapping(value = "/gohome10")
+//	public Map<String, Board> gohome10()
+//	{
+//		log.info("컬렉션 Map 타입 home08");
+//		Map<String, Board> map = new HashMap() <String, Baord>();
+//		Board board = new Baord();
+//		
+//		board.setTitle("제목"); 
+//		board.setContent("내용입니다."); 
+//		board.setWriter("홍길동"); 
+//		board.setRegDate(new Date());
+//		map.put("key1", board);
+//
+//		Board board2 = new Board();
+//		board2.setTitle("제목2"); 
+//		board2.setContent("내용입니다.2"); 
+//		board2.setWriter("홍길동2"); 
+//		board2.setRegDate(new Date());
+//		map.put("key2", board2);
+//		return map;
+//	}
+//	
+	
+//	@RequestMapping(value = "/ajaxHome", method = RequestMethod.GET) 
+//	public String ajaxHome() {
+//	log.info("Content Type 매핑"); 
+//	//return "ajaxHome";
+//	return "ajaxHome";
+//	}
+	
+//	@GetMapping(value = "/ajaxHome2") 
+//	public String ajaxHome2() {
+//	log.info("ajaxHome2"); 
+//	return "ajaxHome2";
+//	}
+//	
+//	@GetMapping(value = "/ajaxHome3") 
+//	public String ajaxHome3() {
+//	log.info("ajaxHome3"); 
+//	return "ajaxHome3";
+//	}
+	
+//	@GetMapping(value = "/gohome01") 
+//	public String gohome01()
+//	{	// 05-5p
+//		log.info("redirect: /gohome02"); 
+//		return "redirect:/gohome02";
+//	}
+//	
+//	@GetMapping(value = "/gohome02") 
+//	public String gohome02()
+//	{
+//		log.info("/gohome02"); 
+//		return "home";
+//	}
+	
+//	@GetMapping(value = "/ajaxHome")
+//	public String ajaxHome ()
+//	{
+//		log.info("Headers Mapping Test...");
+//		
+//		return "ajaxHome";
+//	}
 	
 //	public String home (Locale locale, Model model)
 //	{

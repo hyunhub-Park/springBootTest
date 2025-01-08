@@ -1,16 +1,16 @@
 package com.kh.controller;
 
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.domain.Board;
 
@@ -20,11 +20,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/board")
-public class BoardController
-{
-	
+public class BoardController {
+	// consumes 속성을 지정하지 않으면 기본값인 "application/json" 미디어 타입으로 지정
+//	@PostMapping(value = "/{boardNo}")
+//	public ResponseEntity<String> modify(@PathVariable("boardNo") int boardNo, @RequestBody Board board) {
+//		log.info("modify");
+//		ResponseEntity<String> entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+//		return entity;
+//	}
+//
+//	// consumes 속성값에 "application/json" 미디어 타입을 지정한다.
+//	@PutMapping(value = "/{boardNo}", consumes = "application/json")
+//	public ResponseEntity<String> modifyByJson(@PathVariable("boardNo") int boardNo, @RequestBody Board board) {
+//		log.info("modifyByJson");
+//		ResponseEntity<String> entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+//		return entity;
+//	}
+//
+//	// 실습하지말것 consumes 에 "application/xml" 미디어 타입을 지정한다.
+//	@PutMapping(value = "/{boardNo}", consumes = "application/xml")
+//	public ResponseEntity<String> modifyByXml(@PathVariable("boardNo") int boardNo, @RequestBody Board board) {
+//		log.info("modifyByXml boardNo : " + boardNo);
+//		log.info("modifyByXml board : " + board);
+//		ResponseEntity<String> entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+//		return entity;
+//	}
+
 	@PutMapping (value = "/{boardNo}")
-	public ResponseEntity <String> modify (@PathVariable("boardNo") int boardNo, @RequestBody Board board)
+	public ResponseEntity <String> modify (@PathVariable("boardNo") int boardNo, @RequestBody Board board/*, Model model*/)
 	{
 		log.info("Modify Test...");
 		
@@ -33,17 +56,78 @@ public class BoardController
 		return entity;
 	}
 	
-	// X-HTTP-Method-Override 요청 헤더 값을 "PUT"으로 지정.
-	@PutMapping (value = "/{boardNo}", headers = "X-HTTP-Method-Override=PUT")
-	public ResponseEntity <String> modifyByHeader (@PathVariable ("boardNo") int boardNo, @RequestBody Board board)
+	@PostMapping (value = "/{boardNo}")
+	public ResponseEntity <String> modifyPost (@PathVariable("boardNo") int boardNo, @RequestBody Board board)
 	{
-		log.info("Modify the header...");
+		log.info("Modify Test...");
 		
-		ResponseEntity <String> entity = new ResponseEntity <String> ("SUCCESS", HttpStatus.OK);
+		ResponseEntity <String> entity = new ResponseEntity <String>("SUCCESS", HttpStatus.OK);
 		
 		return entity;
 	}
 	
+	@GetMapping (value = "/{boardNo}", produces = "application/json")
+	public ResponseEntity <Board> boardGetOne (@PathVariable("boardNo") int boardNo)
+	{
+		log.info("boardGetOne Test... " + boardNo);
+		
+		Board board = new Board();
+		board.setTitle("제목"); 
+		board.setContent("내용입니다."); 
+		board.setWriter("홍길동"); 
+		board.setRegDate(new Date());
+		
+		ResponseEntity <Board> entity = new ResponseEntity <Board>(board, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	
+	
+//	@GetMapping (value = "/{boardNo}"/*, produces = "application/json"*/)
+//	public ResponseEntity <Board> boardGetOne (@PathVariable("boardNo") int boardNo)
+//	{
+//		log.info("boardGetOne Test... " + boardNo);
+//		
+//		Board board = new Board();
+//		board.setTitle("제목"); 
+//		board.setContent("내용입니다."); 
+//		board.setWriter("홍길동"); 
+//		board.setRegDate(new Date());
+//		
+//		ResponseEntity <Board> entity = new ResponseEntity <Board>(board, HttpStatus.OK);
+//		
+//		return entity;
+//	}
+	
+	
+	
+//	@PutMapping (value = "/{boardNo}")
+//	public ResponseEntity <String> modify (@PathVariable("boardNo") int boardNo, @RequestBody Board board)
+//	{
+//		log.info("Modify Test...");
+//		
+//		ResponseEntity <String> entity = new ResponseEntity <String>("SUCCESS", HttpStatus.OK);
+//		
+//		return entity;
+//	}
+//	
+//	// X-HTTP-Method-Override 요청 헤더 값을 "PUT"으로 지정.
+//	@PutMapping (value = "/{boardNo}", headers = "X-HTTP-Method-Override=PUT")
+//	public ResponseEntity <String> modifyByHeader (@PathVariable ("boardNo") int boardNo, @RequestBody Board board)
+//	{
+//		log.info("Modify the header...");
+//		
+//		ResponseEntity <String> entity = new ResponseEntity <String> ("SUCCESS", HttpStatus.OK);
+//		
+//		return entity;
+//	}
+	
+	
+	
+	
+	
+
 	// 2번 과제.
 //	@GetMapping(value = "/get", params="register") 
 //	public String registerForm() {
@@ -86,9 +170,6 @@ public class BoardController
 //	return "board/read";
 //	}
 
-	
-	
-	
 	// 1번 과제.
 //	// @RequestMapping의 value 속성에 요청 경로를 설정한다.
 //	// register 경로에 GET 방식 설정
@@ -128,7 +209,6 @@ public class BoardController
 //	log.info("GET 방식 목록");
 //	return "success";
 //	}
-
 
 //	@PutMapping(value="/{baordNoVal}")
 //	public ResponseEntity<String> modify (@PathVariable("boardNoVal") int boardNoVal, @RequestBody Board board)
