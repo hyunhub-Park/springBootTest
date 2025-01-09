@@ -8,7 +8,9 @@
 </head>
 <body>
 	<h1>Insert Member</h1>
-	<form action="/member/insert" method="post">
+	<form action="/member/redirect" method="post">
+	<!-- <form action="/member/insert" method="post"> -->
+	<!-- <form action="/member/insert" method="post"> -->
 		userId: <input type="text" name="userId" value="hong">
 		<br>
 		password: <input type="text" name="password" value="1234">

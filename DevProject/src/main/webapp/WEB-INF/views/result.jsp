@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Spring Boot</h1>
-	<div>userId : ${userId}</div>
-	<div>password : ${password}</div>
+	<h1>Result Redirect Spring Boot</h1>
+	<div>userId : ${member.userId}</div>
+	<div>password : ${member.password}</div>
 </body>
 </html>

@@ -21,6 +21,6 @@ public class LombokApplication
 		
 		bs.create(board);
 		bs.readByBoardNo(1);
-		bs.delete(baord);
+		bs.delete(board);
 	}
 }

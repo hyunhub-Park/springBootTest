@@ -20,7 +20,7 @@ import lombok.ToString;
 //@Setter
 @NoArgsConstructor	// dafault 생성자 생성.
 @RequiredArgsConstructor
-// @Builder
+@Builder
 @ToString(exclude = "content")
 //@ToString
 @EqualsAndHashCode(of="boardNo")
@@ -32,6 +32,19 @@ public class Board
 	private String content;
 	private String writer;
 	private Date regDate;
+	
+	public Board(int boardNo, @NonNull String title, String content, String writer, Date regDate)
+	{
+		super();
+		this.boardNo = boardNo;
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+		this.regDate = regDate;
+	}
+	
+	
+	
 
 
 }

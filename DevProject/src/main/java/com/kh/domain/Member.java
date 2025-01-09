@@ -1,7 +1,9 @@
 package com.kh.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of="boardNo")
 public class Member 
 {
+	@NotBlank(message = "Not Blank...")
 	private String userId; 
 	private String userName; 
 	private String password; 
@@ -28,7 +31,8 @@ public class Member
 	// private ArrayList <String> car;
 //	private String [] car;
 //	private Address address;
-
-
-
+	
+	private List <String> hobbyList;
+	
+	private String email;
 }

@@ -41,7 +41,7 @@ public class TestController
 	@RequestMapping(value = "/getBoardList", method = RequestMethod.GET)
 	public @ResponseBody List<Board> getBoardList()
 	{
-		List <Board> boardList = new ArrayList()<Board>();
+		List <Board> boardList = new ArrayList <Board>();
 
 		for (int i = 1; i <= 10; i++)
 		{
@@ -51,7 +51,7 @@ public class TestController
 			board.setContent("zeus");
 			board.setWriter("kdj");
 			board.setRegDate(new Date());
-			boardList.add(boar1d);
+			boardList.add(board);
 		}
 		
 		return boardList;
