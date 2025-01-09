@@ -17,6 +17,21 @@
 		<br>
 		date: <input type="text" name="dateOfBirth" value="2025/01/08">
 		<br>
+		car: <select name="car" multiple>
+			<option value="volvo">Volvo</option>
+			<option value="saab">Saab</option>
+			<option value="opel">Opel</option>
+			<option value="audi">Audi</option>
+		</select>
+		<br>
+		<!-- postCode: <input type="text" name="postCode" /> -->
+		postCode: <input type="text" name="address.postCode" />
+		<br>
+		<!-- location: <input type="text" name="location" /> -->
+		location: <input type="text" name="address.location" />
+		<br>
+		<input type="submit" value="registerAddress">
+		<br>
 		<input type="submit" value="Memberbeans">
 	</form>
 </body>

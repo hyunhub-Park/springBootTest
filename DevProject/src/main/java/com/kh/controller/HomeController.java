@@ -30,6 +30,24 @@ public class HomeController
 		 return "memberInsert";
 	 }
 	 
+	 @RequestMapping(value = "/ajaxHome5", method = RequestMethod.GET) 
+	 public	 String ajaxHome5()
+	 {
+		 return "ajaxHome5";
+	 }
+	 
+	 @RequestMapping(value = "/ajaxHome6", method = RequestMethod.GET) 
+	 public	 String ajaxHome6()
+	 {
+		 return "ajaxHome6";
+	 }
+	 
+	 @RequestMapping(value = "/registerFileUpForm", method = RequestMethod.GET) 
+	 public String registerFileUpForm ()
+	 {
+		 log.info("registerFileUpForm");
+		 return "registerFileUpForm";
+	 }
 	
 //	
 //	@ResponseBody

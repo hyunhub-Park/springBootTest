@@ -24,6 +24,10 @@ public class Member
 	private String password; 
 	private Date dateOfBirth;
 	private int coin;
+	// private String car;
+	// private ArrayList <String> car;
+//	private String [] car;
+//	private Address address;
 
 
 

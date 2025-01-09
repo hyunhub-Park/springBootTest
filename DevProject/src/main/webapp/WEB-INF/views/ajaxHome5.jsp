@@ -4,37 +4,47 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AJAX HOME4</title>
+<title>AJAX HOME5</title>
 </head>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function()
-		{
-			$("#getBtn").on("click", function()
+	$(document).ready(function()
+	{
+		let userObjectArray =
+		[
 			{
-				let boardNo = $("#boardNo"); 
-				let boardNoVal = boardNo.val();
-				console.log(boardNoVal);
-				
-					$.ajax (
-					{
-						type : "get",
-						url : "/board/" + boardNoVal,
-						headers : {"Accept" : "application/json"},
-						success : function (result)
-						{
-							console.log("result : " + result);
-							alert(JSON.stringify(result));
-						}
-					});
-			});
+				userId : "name01",
+				password : "pw01"
+			},
+			{
+				userId : "name02",
+				password : "pw02"
+			}
+		];
+
+		$.ajax (
+		{
+			type : "post",
+			url : "/member/register06",
+			data : JSON.stringify(userObjectArray),
+			contentType : "application/json; charset=utf-8",
+			success : function(result)
+			{
+				console.log("result: " + result);
+
+				if (result === "SUCCESS")
+				{
+					alert("SUCCESS");
+				}
+			}
 		});
+	});
 </script>
 
 <body>
-	<h1>Ajax Home4</h1>
+	<h1>Ajax Home5</h1>
 	<form>
 		boardNo: <input type="text" name="boardNo" value="" id="boardNo"><br>
 		title: <input type="text" name="title" value="" id="title"><br>
