@@ -3,7 +3,11 @@ package com.kh.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,8 +27,13 @@ public class Member
 {
 	@NotBlank(message = "Not Blank...")
 	private String userId; 
+	@NotBlank(message = "Not Blank...")
+	@Size(max=3)
 	private String userName; 
-	private String password; 
+	private String password;
+	@Email
+	private String email;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 	private int coin;
 	// private String car;
@@ -34,5 +43,5 @@ public class Member
 	
 	private List <String> hobbyList;
 	
-	private String email;
+	private String gender;
 }
