@@ -20,7 +20,8 @@
 	<delete id="delete">
 		DELETE FROM mybatisboard WHERE board_no = #{boardNo}
 	</delete>
-	<select id="list" resultType="com.zeus.domain.Board">
+	 <!-- BoardMapper.java -> alias -->
+	<select id="list" resultType="board">
 		<![CDATA[
 		SELECT board_no, title, content, writer, reg_date
 		FROM mybatisboard WHERE board_no > 0
