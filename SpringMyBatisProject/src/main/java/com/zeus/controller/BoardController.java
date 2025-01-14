@@ -15,9 +15,22 @@ import lombok.extern.java.Log;
 @Controller
 @RequestMapping("/board")
 @MapperScan(basePackages = "com.zeus.mapper")
-public class BoardController {
+public class BoardController
+{
 	@Autowired
 	private BoardService service;
+	
+	/* 검색기능 추가. */
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(String title, Model model) throws Exception
+	{
+		log.info("search");
+		Board board = new Board();
+		board.setTitle(title);
+		model.addAttribute("board", board);
+		model.addAttribute("list", service.search(title));
+		return "board/list";
+	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registerForm(Board board, Model model) throws Exception {
@@ -32,8 +45,13 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void list(Model model) throws Exception {
+	public void list(Model model) throws Exception
+	{
 		log.info("list");
+		
+		/* 검색기능 추가. */
+		model.addAttribute("board", new Board());
+		
 		model.addAttribute("list", service.list());
 	}
 

@@ -4,10 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mybatis USER 등록</title>
+<title>파일 업로드</title>
 </head>
 <body>
-	<h3>${msg}</h3>
-	<br> <a href="/user/list">List</a>
+	<div>
+		<h2>${msg}</h2>
+		<a href="list">List</a>
+	</div>
 </body>
 </html>

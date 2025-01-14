@@ -45,4 +45,11 @@ public class BoardServiceImpl implements BoardService
 	{
 		return mapper.list();
 	}
+
+	/* 검색기능 추가. */
+	@Override
+	public List<Board> search(String title) throws Exception
+	{
+		return mapper.search(title);
+	}
 }
