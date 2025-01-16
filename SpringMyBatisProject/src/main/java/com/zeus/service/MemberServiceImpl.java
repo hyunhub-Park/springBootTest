@@ -92,9 +92,16 @@ public class MemberServiceImpl implements MemberService
 		mapper.delete(userNo);
 	}
 
+	/* [단일] 검색기능 추가. */
+	/*
+	 * @Override public List <Member> search(String userId) throws Exception {
+	 * return mapper.search(userId); }
+	 */
+	
+	/* [다중] 검색기능 추가. */
 	@Override
-	public List <Member> search(String userId) throws Exception
+	public List<Member> search(String searchKeyword) throws Exception
 	{
-		return mapper.search(userId);
+	    return mapper.search(searchKeyword);
 	}
 }

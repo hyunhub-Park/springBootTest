@@ -16,6 +16,10 @@ public interface MemberService
 	
 	public void remove(int userNo) throws Exception;
 
-	/* 검색기능 추가. */
-	public List <Member> search (String userId) throws Exception;
+
+	/* [단일] 검색기능 추가. */
+	// public List <Member> search (String userId) throws Exception;
+	
+	/* [다중] 검색기능 추가. */
+	public List<Member> search(String searchKeyword) throws Exception;
 }

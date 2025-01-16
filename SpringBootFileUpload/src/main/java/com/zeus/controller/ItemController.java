@@ -90,7 +90,7 @@ public class ItemController
 		
 		return "item/modify";
 	}
-
+	
 	// 이미지 게시판에 등록한 내용 수정한 것을 DB에 저장 요청. (DB & 파일) (/WEB-INF/views/item/success.jsp)
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String modify(Item item, Model model) throws Exception
@@ -108,6 +108,9 @@ public class ItemController
 		}
 		
 		this.itemService.modify(item);
+		
+		/* 수정 후 item 객체를 model에 추가하여 뷰에서 새로운 이미지 URL을 사용하도록 함. */
+	    model.addAttribute("item", item);
 		
 		model.addAttribute("msg", "수정이 완료되었습니다.");
 		
@@ -135,6 +138,7 @@ public class ItemController
 		
 		return "item/success";
 	}
+
 
 	// 함수.
 	// 멤버함수 파일명 부여 시, 중복없는 이름으로 이미지 파일을 업로드 및 저장(C://upload)

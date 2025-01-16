@@ -9,14 +9,30 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	$(document).ready(function() {
+	$(document).ready(function()
+	{
+		// 기존 이미지를 선택하면 새로운 이미지를 미리 보여주기 위해
+		$("input[name='picture']").on("change", function(event)
+			{
+				var reader = new FileReader();
+				reader.onload = function(e)
+			{
+				// 새로운 이미지가 선택되었을 때 이미지 태그를 새로 업데이트
+				$("img#uploadedImage").attr("src", e.target.result);
+			};
+			reader.readAsDataURL(this.files[0]); // 파일을 읽어 미리보기
+		});
+
 		var formObj = $("#item");
-		$("#btnModify").on("click", function() {
+		$("#btnModify").on("click", function()
+		{
 			formObj.attr("action", "/item/modify");
 			formObj.attr("method", "post");
 			formObj.submit();
 		});
-		$("#btnList").on("click", function() {
+		
+		$("#btnList").on("click", function()
+		{
 			self.location = "/item/list";
 		});
 	});

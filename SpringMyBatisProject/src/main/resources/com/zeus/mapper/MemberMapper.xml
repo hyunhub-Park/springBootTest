@@ -90,13 +90,13 @@
 		WHERE mem.user_no = #{userNo}
 	</select>
 
-	<select id="search" resultType="Member">
+	<!-- [단일] 검색기능 추가. -->
+	<!-- <select id="search" resultType="Member">
 		<![CDATA[
 			SELECT user_no,
 					user_id,
 					user_pw,
 					user_name,
-					reg_date,
 					coin,
 					reg_date,
 					upd_date,
@@ -104,14 +104,36 @@
 			FROM mybatismember
 			WHERE user_no > 0
 		]]>
-		<!-- userNo의 값이 빈 값이 아니면 쿼리를 포함한다. -->
-		<!-- CONCAT('', '') : 두 개의 문자 결합 -->
-		<if test="userId != null and userNo != ''">
+		userNo의 값이 빈 값이 아니면 쿼리를 포함한다.
+		CONCAT('', '') : 두 개의 문자 결합
+		<if test="userId != null and userId != ''">
 			AND user_id LIKE CONCAT('%', CONCAT(#{userId}, '%'))
 		</if>
 			<![CDATA[
 				ORDER BY user_no DESC,
 				reg_date DESC
 			]]>
+	</select> -->
+	
+	<!-- [다중] 검색기능 추가. -->
+	<select id="search" resultType="Member">
+	    <![CDATA[
+		    SELECT user_no,
+		           user_id,
+		           user_pw,
+		           user_name,
+		           coin,
+		           reg_date,
+		           upd_date,
+		           enabled
+		    FROM mybatismember
+		    WHERE user_no > 0
+	    ]]>
+	    <if test="searchKeyword != null and searchKeyword != ''">
+	        AND (user_id LIKE '%' || #{searchKeyword} || '%' OR user_name LIKE '%' || #{searchKeyword} || '%')
+	    </if>
+	    <![CDATA[
+	   		ORDER BY user_no DESC, reg_date DESC
+	    ]]>
 	</select>
 </mapper>

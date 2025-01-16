@@ -1,4 +1,6 @@
 package com.zeus.controller;
+import java.util.List;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,20 +23,35 @@ public class MemberController
 	@Autowired
 	private MemberService service;
 
-	/* 검색기능 추가. */
+	/* [단일] 검색기능 추가. */
+//	@RequestMapping(value = "/search", method = RequestMethod.POST)
+//	public String search(String userId, Model model) throws Exception
+//	{
+//		log.info("search");
+//		
+//		Member member = new Member();
+//		
+//		member.setUserId(userId);
+//
+//		model.addAttribute("member", member);
+//		model.addAttribute("list", service.search(userId));
+//		
+//		return "user/list";
+//	}
+	
+	/* [다중] 검색기능 추가.*/
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(String userId, Model model) throws Exception
+	public String search(String searchKeyword, Model model) throws Exception
 	{
 		log.info("search");
-		
-		Member member = new Member();
-		
-		member.setUserId(userId);
-		
-		model.addAttribute("member", member);
-		model.addAttribute("list", service.search(userId));
-		
-		return "member/list";
+
+		// searchKeyword로 userId와 userName을 모두 검색.
+		List <Member> memberList = service.search(searchKeyword);
+
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("list", memberList);
+
+		return "user/list";
 	}
 	
 	// 사용자 입력 폼 요청. (/WEB-INF/views/user/register.jsp)
@@ -59,6 +76,9 @@ public class MemberController
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public void list(Model model) throws Exception
 	{	// http://localhost:8080/user/list
+		log.info("list");
+		
+		model.addAttribute("member", new Member());
 		model.addAttribute("list", service.list());
 	}
 	

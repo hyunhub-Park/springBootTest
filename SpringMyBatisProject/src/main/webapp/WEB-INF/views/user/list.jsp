@@ -12,9 +12,27 @@
 <body>
 <form:form modelAttribute="member" method="POST" action="search">
 	<h3>회원 목록</h3>
-	TITLE : <form:input path="userId" /><input type="submit" value="검색" />
-	<a href="/user/register">New</a>
-	<table border="1">
+	<!-- [단일] 검색기능 추가. -->
+	<%-- TITLE : <form:input path="userId" /><input type="submit" value="검색" /> --%>
+	
+	<!-- [다중] 검색기능 추가. -->
+	<!-- 하나의 입력창을 통해 userId와 userName을 검색 -->
+	Search : <input type="text" name="searchKeyword" placeholder="아이디 또는 이름을 입력하세요..." style="width: 300px;"/>
+			<input type="submit" value="검색" />
+			&nbsp;
+			<a href="/user/register">New</a>
+			&nbsp;
+			<a href="/user/list">List</a>
+
+	<!-- 검색창 placeholder 스타일 적용. -->
+			<style>
+				input::placeholder
+				{
+					font-style: italic; /* placeholder 텍스트에 이탤릭체 적용 */
+				}
+			</style>
+			
+		<table border="1">
 		<tr>
 			<th align="center" width="60">NO</th>
 			<th align="center" width="80">USERID</th>
