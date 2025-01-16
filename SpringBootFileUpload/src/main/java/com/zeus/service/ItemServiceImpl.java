@@ -39,32 +39,29 @@ public class ItemServiceImpl implements ItemService
 		return mapper.read(itemId);
 	}
 	
-	
 	@Override
 	public void modify(Item item) throws Exception
 	{
-	    // 기존 이미지 URL을 가져옴
+	    // 기존 이미지 URL을 가져옴.
 	    String existingPictureUrl = mapper.getPicture(item.getItemId());
-	    
-	    // 기존 이미지가 존재하고 새 이미지가 업로드될 경우 기존 이미지 삭제
+
 	    MultipartFile file = item.getPicture();
-	    
-	    // 새 이미지를 첨부했을 경우
+
+	    // 게시글 수정 시, 이미지 파일을 새로 첨부할 경우.
 	    if (file != null && file.getSize() > 0)
 	    {
-	        // 기존 이미지가 있으면 삭제
+	        // 기존 이미지가 있을 시 삭제.
 	        if (existingPictureUrl != null && !existingPictureUrl.isEmpty())
 	        {
-	            deleteFile(existingPictureUrl); // 기존 이미지 삭제
+	            deleteFile(existingPictureUrl);
 	        }
-	        
-	        // 새 이미지 파일을 저장하고 URL을 설정
+
+	        // 새 이미지 파일을 저장 및 URL 설정.
 	        String createdFileName = uploadFile(file.getOriginalFilename(), file.getBytes(), existingPictureUrl);
-	        item.setPictureUrl(createdFileName); // 새 이미지 URL로 설정
-	    } 
-	    else
+	        item.setPictureUrl(createdFileName);
+	    } else
 	    {
-	        // 새 이미지가 없으면 기존 이미지 URL을 그대로 유지
+	        // 이미지 파일을 새로 첨부하지 않을 경우, 기존 이미지 URL을 그대로 유지.
 	        item.setPictureUrl(existingPictureUrl);
 	    }
 
@@ -72,40 +69,6 @@ public class ItemServiceImpl implements ItemService
 	    mapper.update(item);
 	}
 
-
-
-//	@Override
-//	public void modify(Item item) throws Exception
-//	{
-//        // 기존 이미지 URL을 가져옴
-//        String existingPictureUrl = mapper.getPicture(item.getItemId());
-//
-//        // 기존 이미지가 존재하고 새 이미지가 업로드될 경우 기존 이미지 삭제
-//        MultipartFile file = item.getPicture();
-//
-//        // 새 이미지를 첨부했을 경우
-//        if (file != null && file.getSize() > 0)
-//        {
-//            // 기존 이미지가 있으면 삭제
-//            if (existingPictureUrl != null && !existingPictureUrl.isEmpty())
-//            {
-//                deleteFile(existingPictureUrl); // 기존 이미지 삭제
-//            }
-//
-//            // 새 이미지 파일을 저장하고 URL을 설정
-//            String createdFileName = uploadFile(file.getOriginalFilename(), file.getBytes());
-//            item.setPictureUrl(createdFileName); // 새 이미지 URL로 설정
-//        } 
-//        else
-//        {
-//            // 새 이미지가 없으면 기존 이미지 URL을 그대로 유지
-//            item.setPictureUrl(existingPictureUrl);
-//        }
-//
-//        // 수정된 내용 DB에 반영
-//        mapper.update(item);
-//	}
-	
 	@Override
 	public void remove(Integer itemId) throws Exception
 	{
@@ -164,42 +127,23 @@ public class ItemServiceImpl implements ItemService
 		    }
 	}
 	
-	/* 업로드 파일 경로. */
-	private String uploadFile(String originalName, byte[] fileData, String existingFileName) throws Exception
+	@Override
+	public String uploadFile(String originalName, byte[] fileData, String existingFileName) throws Exception
 	{
-	    // 기존 파일이 있으면 삭제
+	    // 기존 파일 존재 시 삭제.
 	    if (existingFileName != null && !existingFileName.isEmpty())
 	    {
-	        deleteFile(existingFileName); // 기존 파일 삭제
+	        deleteFile(existingFileName);
 	    }
-
-	    // UUID를 이용하여 고유한 파일명 생성
-	    UUID uid = UUID.randomUUID();
 	    
-	    // 고유한 파일 이름 생성
+	    // 새로운 파일 생성.
+	    UUID uid = UUID.randomUUID();
 	    String createdFileName = uid.toString() + "_" + originalName;
 	    
-	    // 업로드 경로에 파일 생성
 	    File target = new File(uploadPath, createdFileName);
+	    
 	    FileCopyUtils.copy(fileData, target);
 	    
 	    return createdFileName;
 	}
-
-	
-//	/* 업로드 파일 경로. */
-//	private String uploadFile(String originalName, byte[] fileData) throws Exception
-//	{
-//		 // UUID를 이용하여 고유한 파일명 생성
-//	    UUID uid = UUID.randomUUID();
-//	    
-//	    // 고유한 파일 이름 생성
-//	    String createdFileName = uid.toString() + "_" + originalName;
-//	    
-//	    // 업로드 경로에 파일 생성
-//	    File target = new File(uploadPath, createdFileName);
-//	    FileCopyUtils.copy(fileData, target);
-//	    
-//	    return createdFileName;
-//    }
 }
