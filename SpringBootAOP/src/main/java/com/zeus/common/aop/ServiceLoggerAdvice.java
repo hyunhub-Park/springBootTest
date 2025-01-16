@@ -55,10 +55,34 @@ public class ServiceLoggerAdvice
 	@Around("execution(* com.zeus.service.BoardService*.*(..))")
 	public Object timeLog(ProceedingJoinPoint pjp) throws Throwable
 	{
+		// top advice
 		long startTime = System.currentTimeMillis();
-		Object obj = pjp.proceed();
 		
+		
+//		Object obj = null;
+//		try
+//		{
+//			// BoardServiceImpl에 있는 모든 함수들이 작동.
+//			// 오류를 발생하지 않으려면 모두 return값이 있어야 함. obj를 반환해야 하므로.
+//			// 최소 return null;이라도 반환해야 함.
+//			obj = pjp.proceed();
+//		} catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//		
+		
+		
+		
+		
+		
+		// join point - 핵심코드 실행.
+		Object obj = pjp.proceed();	// proceed는 객체를 줘야 함.
+		
+		// bottom advice
 		long stopTime = System.currentTimeMillis();
+		
+		// etc info.
 		log.info(pjp.getSignature().getName() + " : " + (stopTime-startTime));
 		log.info("===================================================================================");
 		
