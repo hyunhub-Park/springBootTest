@@ -18,5 +18,4 @@ public interface ItemService
 
 	public String getPicture(Integer itemId) throws Exception;
 
-	String uploadFile(String originalName, byte[] fileData, String existingFileName) throws Exception;
 }

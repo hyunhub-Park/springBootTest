@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.mybatis.spring.annotation.MapperScan;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,23 +56,28 @@ public class ItemController
 		
 		return "item/register";
 	}
-	
+
+	// 이미지 게시판에 등록한 내용을 DB에 저장 요청. (DB & 파일) (/WEB-INF/views/item/success.jsp)
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Item item, Model model) throws Exception
 	{
-	    MultipartFile file = item.getPicture();
-	    
-	    if (file != null && file.getSize() > 0)
-	    {
-	        String createdFileName = itemService.uploadFile(file.getOriginalFilename(), file.getBytes(), null);
-	        item.setPictureUrl(createdFileName);
-	    }
-	    
-	    this.itemService.regist(item);
-	    
-	    model.addAttribute("msg", "등록이 완료되었습니다.");
-	    
-	    return "item/success";
+		MultipartFile file = item.getPicture();
+		
+		log.info("originalName: " + file.getOriginalFilename());
+		log.info("size: " + file.getSize());
+		log.info("contentType: " + file.getContentType());
+		
+		// uploadFile(String originalName, byte[] fileData) 구조임
+		
+		String createdFileName = uploadFile(file.getOriginalFilename(), file.getBytes());
+		
+		item.setPictureUrl(createdFileName);
+		
+		this.itemService.regist(item);
+		
+		model.addAttribute("msg", "등록이 완료되었습니다.");
+		
+		return "item/success";
 	}
 
 	// 이미지 게시판에 등록된 내용을 수정. (/WEB-INF/views/item/modify.jsp)
@@ -84,18 +91,30 @@ public class ItemController
 		return "item/modify";
 	}
 	
+	// 이미지 게시판에 등록한 내용 수정한 것을 DB에 저장 요청. (DB & 파일) (/WEB-INF/views/item/success.jsp)
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String modify(Item item, Model model) throws Exception
 	{
-	    // 이미지는 ItemService의 modify 메소드에서 처리됩니다.
-	    this.itemService.modify(item);
-
-	    // 수정 후 item 객체를 model에 추가하여 뷰에서 새로운 이미지 URL을 사용하도록 함.
+		MultipartFile file = item.getPicture();
+		
+		if (file != null && file.getSize() > 0)
+		{
+			log.info("originalName: " + file.getOriginalFilename());
+			log.info("size: " + file.getSize());
+			log.info("contentType: " + file.getContentType());
+			
+			String createdFileName = uploadFile(file.getOriginalFilename(), file.getBytes());
+			item.setPictureUrl(createdFileName);
+		}
+		
+		this.itemService.modify(item);
+		
+		/* 수정 후 item 객체를 model에 추가하여 뷰에서 새로운 이미지 URL을 사용하도록 함. */
 	    model.addAttribute("item", item);
-
-	    model.addAttribute("msg", "수정이 완료되었습니다.");
-
-	    return "item/success";
+		
+		model.addAttribute("msg", "수정이 완료되었습니다.");
+		
+		return "item/success";
 	}
 
 	// 이미지 게시판 제거 화면 요청. (DB & 파일) (/WEB-INF/views/item/remove.jsp)
@@ -118,6 +137,28 @@ public class ItemController
 		model.addAttribute("msg", "삭제가 완료되었습니다.");
 		
 		return "item/success";
+	}
+
+
+	// 함수.
+	// 멤버함수 파일명 부여 시, 중복없는 이름으로 이미지 파일을 업로드 및 저장(C://upload)
+	private String uploadFile(String originalName, byte[] fileData) throws Exception
+	{
+		// 4cd18230-d5e8-42e8-ae2e-a4104a6b5e29 저장명 생성.
+		UUID uid = UUID.randomUUID();
+		
+		// 4cd18230-d5e8-42e8-ae2e-a4104a6b5e29_T멤버십으로 30% 할인.jpg
+		String createdFileName = uid.toString() + "_" + originalName;
+		
+		// File target = C://upload/4cd18230-d5e8-42e8-ae2e-a4104a6b5e29_T멤버십으로 30% 할인.jpg
+		// 이름만 저장됨.
+		File target = new File(uploadPath, createdFileName);
+		
+		// File target = C://upload/4cd18230-d5e8-42e8-ae2e-a4104a6b5e29_T멤버십으로 30% 할인.jpg
+		// 실제 저장.
+		FileCopyUtils.copy(fileData, target);
+		
+		return createdFileName;
 	}
 
 	// 브라우저에서 <img src="/item/display/2" /> 2번 이미지 게시판에서 호출하여 redponseBody를 통해 화면에 출력.
