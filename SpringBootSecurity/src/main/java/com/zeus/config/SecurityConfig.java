@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.zeus.common.security.CustomAccessDeniedHandler;
+import com.zeus.common.security.CustomLoginSuccessHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,35 +31,69 @@ public class SecurityConfig
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
 		log.info("security config ...");
-		// 1. csrf 토큰 비활성화
+		
+		// csrf 토큰 비활성화
 		http.csrf().disable();
 		
-		// 2. /board/list 인증, /board/register 인증, 인가(MEMBER)
-		// URI 패턴으로 접근 제한을 설정한다.
+		// URI 패턴으로 모든 접근 제한을 설정한다.
 		http.authorizeRequests().requestMatchers("/board/list").permitAll();
-		http.authorizeRequests().requestMatchers("/board/register").hasRole("MEMBER");
 		
-		http.authorizeRequests().requestMatchers("/notice/list").permitAll();
+		// 로그인사람만 가능
+		http.authorizeRequests().requestMatchers("/board/register").authenticated();
+		
+		// 로그인하고 멤버 인가받은사람만 가능
+		http.authorizeRequests().requestMatchers("/notice/list").hasRole("MEMBER");
+		
+		// 로그인하고 관리자로 인가받은사람만 가능
 		http.authorizeRequests().requestMatchers("/notice/register").hasRole("ADMIN");
+
+		// 개발자가 정의한 로그인 페이지의 URI를 지정한다.
+		// 로그인 성공 후 처리를 담당하는 처리자로 지정한다.
+		// http.formLogin().loginPage("/login").successHandler(createAuthenticationSuccessHandler());
 		
-		// 3. 로그인 기본폼 사용
-		// 로그인 성공시
+		// 개발자가 정의한 로그인 페이지의 URI를 지정한다. 
+		// http.formLogin().loginPage("/login");
+		
+		// 로그아웃 처리를 위한 URI를 지정하고, 로그아웃한 후에 세션을 무효화 한다. 
+		http.logout().logoutUrl("/logout").invalidateHttpSession(true);
+		
+		// 등록한 CustomAccessDeniedHandler를 접근 거부 처리자로 지정한다.
+		http.exceptionHandling().accessDeniedHandler(createAccessDeniedHandler());
+		
+		
+		
+//		// 1. csrf 토큰 비활성화
+//		http.csrf().disable();
+//		
+//		// 2. /board/list 인증, /board/register 인증, 인가(MEMBER)
+//		// URI 패턴으로 접근 제한을 설정한다.
+//		http.authorizeRequests().requestMatchers("/board/list").permitAll();
+//		http.authorizeRequests().requestMatchers("/board/register").hasRole("MEMBER");
+//		
+//		http.authorizeRequests().requestMatchers("/notice/list").permitAll();
+//		http.authorizeRequests().requestMatchers("/notice/register").hasRole("ADMIN");
+//		
+//		// 3. 로그인 기본폼 사용(폼 기반 인증기능을 사용한다.)
+//		// 로그인 성공시
+//		http.formLogin();
+		
+		// 폼 기반 인증 기능을 사용한다. 
 		http.formLogin();
-
-		// 4. id, password 기존것을 사용하는 것이 아닌, 설계자가 설계한 id, pw를 사용. 인가정책을 만들어 제시.
-
-		// 5. id, pw가 일치하지 않는 경우
-		// 접근 거부 처리자의 URI를 지정
-		http.exceptionHandling().accessDeniedPage("/accessError");
-		
-		//폼 기반 인증기능을 사용한다.
-		// HTTP 보안 설정을 빌드하고 반환한다.
+//
+//		// 4. id, password 기존것을 사용하는 것이 아닌, 설계자가 설계한 id, pw를 사용. 인가정책을 만들어 제시.
+//
+//		// 5. id, pw가 일치하지 않는 경우
+//		// 접근 거부 처리자의 URI를 지정
+//		http.exceptionHandling().accessDeniedPage("/accessError");
+//		
+//		// HTTP 보안 설정을 빌드하고 반환한다.
 		return http.build(); 
 	}
 	
+
 	// @EnableWebSecurity 곳에 세워야 하는 정책.
 	// 추후에는 My batis 사용.(테이블)
-	@Autowired
+	// @Autowired
 	protected void configure (AuthenticationManagerBuilder auth) throws Exception
 	{
 		// 지정된 아이디와 패스워드로 로그인이 가능하도록 설정한다.
@@ -64,5 +103,19 @@ public class SecurityConfig
 		auth.inMemoryAuthentication().withUser("admin").
 		// password("{noop}1234").roles("ADMIN", "MEMBER");
 		password("{noop}1234").roles("ADMIN");
+	}
+	
+	// CustomLoginSuccessHandler를 빈으로 등록한다.
+	@Bean
+	public AuthenticationSuccessHandler createAuthenticationSuccessHandler()
+	{
+		return new CustomLoginSuccessHandler();
+	}
+	
+	// CustomAccessDeniedHandler를 빈으로 등록한다.
+	@Bean
+	public AccessDeniedHandler createAccessDeniedHandler()
+	{
+		return new CustomAccessDeniedHandler();
 	}
 }
