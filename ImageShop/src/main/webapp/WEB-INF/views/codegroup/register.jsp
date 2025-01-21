@@ -10,6 +10,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>Image Shop</title>
 <script type="text/javascript" src="/js/test.js"></script>
+	<script>
+		$(document).ready(function()
+		{
+			var formObj = $("#codeGroup");
+			$("#btnRegister").on("click", function()
+			{
+				formObj.submit();
+			});
+			$("#btnList").on("click", function()
+			{
+				self.location = "list";
+			});
+		});
+	</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -37,11 +51,6 @@
 				<spring:message code="action.list" />
 			</button>
 		</div>
-
-		<h1>
-			<spring:message code="common.homeWelcome" />
-		</h1>
-		<P>${serverTime}</P>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

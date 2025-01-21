@@ -118,11 +118,12 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
-<!--		 jstl 의존성 설정 
+<!--		 jstl 의존성 설정 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-		</dependency>-->
+			<version>1.2</version>
+		</dependency>
 		<!-- Tiles 의존성 설정 -->
 		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
 		<dependency>
@@ -160,5 +161,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
