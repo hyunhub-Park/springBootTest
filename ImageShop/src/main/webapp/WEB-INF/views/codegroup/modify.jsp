@@ -41,8 +41,6 @@
 				<spring:message code="action.list" />
 			</button>
 		</div>
-
-
 	</main>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
