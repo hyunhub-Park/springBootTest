@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Image Shop</title>
-<script type="text/javascript" src="/js/test.js"></script>
+<!-- <script type="text/javascript" src="/js/test.js"></script> -->
 </head>
 <body>
     <jsp:include page="./common/header.jsp" />
